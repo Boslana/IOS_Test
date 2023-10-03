@@ -7,39 +7,39 @@ class Entity {
     public var maximumHealth, health: Int?
     public let damage: ClosedRange<Int>?
     
-    init?(attack: UInt8, protection: UInt8, health: Int, damage: ClosedRange<Int>) {
+    init?(attack: UInt8, protection: UInt8, health: Int, minDamage: Int, maxDamage: Int) {
+        // проверка входных данных
+        guard Entity.checkAttack(attack: attack), Entity.checkProtection (protection:protection),
+              Entity.checkHealth (health:health), Entity.checkDamage (minDamage:minDamage, maxDamage:maxDamage) else {
+            print("Введите корректные значения")
+            return nil
+        }
         
         self.attack = attack // атака
         self.protection = protection // защита
         self.maximumHealth = health // максимальное здоровье
         self.health = health // текущее здоровье
-        self.damage = damage // урон
-        // проверка входных данных
-        guard checkAttack(attack: attack), checkProtection (protection:protection),
-              checkHealth (health:health), checkDamage (damage:damage) else {
-            print("Введите корректные значения")
-            return nil
-        }
+        self.damage = minDamage...maxDamage // урон
     }
     // получаем урон
     public func takeDamage(damage: Int) {
         health = health! - damage
     }
     
-    private func checkAttack(attack: UInt8) -> Bool {
+    private static func checkAttack(attack: UInt8) -> Bool {
         return 1...30 ~= attack
     }
     
-    private func checkProtection(protection: UInt8) -> Bool {
+    private static func checkProtection(protection: UInt8) -> Bool {
         return 1...30 ~= protection
     }
     
-    private func checkHealth(health: Int) -> Bool {
+    private static func checkHealth(health: Int) -> Bool {
         return health > 0
     }
     
-    private func checkDamage(damage: ClosedRange<Int>) -> Bool {
-        return damage.lowerBound > 0 && damage.upperBound > 0 && damage.lowerBound < damage.upperBound
+    private static func checkDamage(minDamage: Int, maxDamage: Int) -> Bool {
+        return minDamage > 0 && maxDamage > 0 && minDamage < maxDamage
     }
 }
 
@@ -63,24 +63,29 @@ class Game {
     public func game() {
         var playerAttack = true
         
-        var player = Player(attack: 29, protection: 14, health: 20, damage: 1...5)
-        var monster = Monster(attack: 28, protection: 15, health: 15, damage: 1...22)
-        // цикл игры
-        repeat {
-            if playerAttack {
-                attacka(attacker: player!, defender: monster!)
-                playerAttack = false
-            } else {
-                attacka(attacker: monster!, defender: player!)
-                player!.healing()
-                playerAttack = true
-            }
-        } while player!.health! > 0 && monster!.health! > 0
+        var player = Player(attack: 29, protection: 14, health: 20, minDamage: 1, maxDamage: 5)
+        var monster = Monster(attack: 28, protection: 15, health: 15, minDamage: 1, maxDamage: 22)
         
-        if player!.health! < 0 {
-            print("Монстр выиграл!")
+        if player != nil && monster != nil {
+            // цикл игры
+            repeat {
+                if playerAttack {
+                    attacka(attacker: player!, defender: monster!)
+                    playerAttack = false
+                } else {
+                    attacka(attacker: monster!, defender: player!)
+                    player!.healing()
+                    playerAttack = true
+                }
+            } while player!.health! > 0 && monster!.health! > 0
+            
+            if player!.health! < 0 {
+                print("Монстр выиграл!")
+            } else {
+                print ("Игрок выиграл!")
+            }
         } else {
-            print ("Игрок выиграл!")
+            print("Что-то пошло не так")
         }
     }
     // расчет модификатора атаки
@@ -105,4 +110,3 @@ class Game {
 
 var game = Game()
 game.game()
-
