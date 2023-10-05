@@ -51,6 +51,10 @@ class Player: Entity {
         if remainsOfHealing > 0 {
             health = Int(Double (health!) + Double (maximumHealth!) * 0.3)
             remainsOfHealing = remainsOfHealing - 1
+            
+            if health! > maximumHealth! {
+                 health = maximumHealth
+            }
         }
     }
 }
@@ -63,8 +67,8 @@ class Game {
     public func game() {
         var playerAttack = true
         
-        var player = Player(attack: 29, protection: 14, health: 20, minDamage: 1, maxDamage: 5)
-        var monster = Monster(attack: 28, protection: 15, health: 15, minDamage: 1, maxDamage: 22)
+        var player = Player(attack: 29, protection: 14, health: 50, minDamage: 1, maxDamage: 5)
+        var monster = Monster(attack: 28, protection: 15, health: 40, minDamage: 1, maxDamage: 22)
         
         if player != nil && monster != nil {
             // цикл игры
