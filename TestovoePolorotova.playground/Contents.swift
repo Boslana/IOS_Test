@@ -108,5 +108,5 @@ class Game {
     }
 }
 
-var game = Game()
+let game = Game()
 game.game()
