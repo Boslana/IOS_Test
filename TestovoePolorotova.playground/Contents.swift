@@ -3,9 +3,9 @@ import PlaygroundSupport
 
 class Entity {
     
-    public let attack, protection : UInt8?
-    public var maximumHealth, health: Int?
-    public let damage: ClosedRange<Int>?
+    public let attack, protection : UInt8
+    public var maximumHealth, health: Int
+    public let damage: ClosedRange<Int>
     
     init?(attack: UInt8, protection: UInt8, health: Int, minDamage: Int, maxDamage: Int) {
         // проверка входных данных
@@ -23,7 +23,7 @@ class Entity {
     }
     // получаем урон
     public func takeDamage(damage: Int) {
-        health = health! - damage
+        health = health - damage
     }
     
     private static func checkAttack(attack: UInt8) -> Bool {
@@ -49,11 +49,11 @@ class Player: Entity {
     // хилимся
     public func healing() {
         if remainsOfHealing > 0 {
-            health = Int(Double (health!) + Double (maximumHealth!) * 0.3)
+            health = Int(Double (health) + Double (maximumHealth) * 0.3)
             remainsOfHealing = remainsOfHealing - 1
             
-            if health! > maximumHealth! {
-                 health = maximumHealth
+            if health > maximumHealth {
+                health = maximumHealth
             }
         }
     }
@@ -67,8 +67,8 @@ class Game {
     public func game() {
         var playerAttack = true
         
-        var player = Player(attack: 29, protection: 14, health: 50, minDamage: 1, maxDamage: 5)
-        var monster = Monster(attack: 28, protection: 15, health: 40, minDamage: 1, maxDamage: 22)
+        var player = Player(attack: 25, protection: 14, health: 40, minDamage: 1, maxDamage: 10)
+        var monster = Monster(attack: 28, protection: 15, health: 50, minDamage: 1, maxDamage: 22)
         
         if player != nil && monster != nil {
             // цикл игры
@@ -81,9 +81,9 @@ class Game {
                     player!.healing()
                     playerAttack = true
                 }
-            } while player!.health! > 0 && monster!.health! > 0
+            } while player!.health > 0 && monster!.health > 0
             
-            if player!.health! < 0 {
+            if player!.health < 0 {
                 print("Монстр выиграл!")
             } else {
                 print ("Игрок выиграл!")
@@ -94,7 +94,7 @@ class Game {
     }
     // расчет модификатора атаки
     private func modificationAttack (attacker: Entity, defender: Entity) -> Int {
-        return Int(attacker.attack! - defender.protection! + 1)
+        return Int(attacker.attack - defender.protection + 1)
     }
     // бросаем кубики и получаем урон
     private func attacka(attacker: Entity, defender: Entity) {
@@ -104,7 +104,7 @@ class Game {
             var randomInt = Int.random(in: 1...6)
             
             if randomInt == 5 || randomInt == 6 {
-                var dam = Int.random(in: attacker.damage!)
+                var dam = Int.random(in: attacker.damage)
                 defender.takeDamage(damage: dam)
                 break
             }
