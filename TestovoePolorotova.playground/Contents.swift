@@ -1,4 +1,3 @@
-
 import PlaygroundSupport
 
 class Entity {
@@ -74,10 +73,10 @@ class Game {
             // цикл игры
             repeat {
                 if playerAttack {
-                    attacka(attacker: player!, defender: monster!)
+                    attack(attacker: player!, defender: monster!)
                     playerAttack = false
                 } else {
-                    attacka(attacker: monster!, defender: player!)
+                    attack(attacker: monster!, defender: player!)
                     player!.healing()
                     playerAttack = true
                 }
@@ -97,7 +96,7 @@ class Game {
         return Int(attacker.attack - defender.protection + 1)
     }
     // бросаем кубики и получаем урон
-    private func attacka(attacker: Entity, defender: Entity) {
+    private func attack(attacker: Entity, defender: Entity) {
         var attack = modificationAttack(attacker: attacker, defender: defender)
         
         for _ in 1...attack {
