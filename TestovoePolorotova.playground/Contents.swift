@@ -104,8 +104,8 @@ class Game {
             var randomInt = Int.random(in: 1...6)
             
             if randomInt == 5 || randomInt == 6 {
-                var dam = Int.random(in: attacker.damage)
-                defender.takeDamage(damage: dam)
+                var randomDamage = Int.random(in: attacker.damage)
+                defender.takeDamage(damage: randomDamage)
                 break
             }
         }
