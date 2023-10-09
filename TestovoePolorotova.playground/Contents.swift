@@ -2,9 +2,9 @@ import PlaygroundSupport
 
 class Entity {
     
-    public let attack, protection : UInt8
-    public var maximumHealth, health: Int
-    public let damage: ClosedRange<Int>
+    let attack, protection : UInt8
+    var maximumHealth, health: Int
+    let damage: ClosedRange<Int>
     
     init?(attack: UInt8, protection: UInt8, health: Int, minDamage: Int, maxDamage: Int) {
         // проверка входных данных
@@ -21,7 +21,7 @@ class Entity {
         self.damage = minDamage...maxDamage // урон
     }
     // получаем урон
-    public func takeDamage(damage: Int) {
+    func takeDamage(damage: Int) {
         health = health - damage
     }
     
@@ -46,7 +46,7 @@ class Player: Entity {
     // начальное кол-во исцелений
     private var remainsOfHealing: Int = 4
     // хилимся
-    public func healing() {
+    func healing() {
         if remainsOfHealing > 0 {
             health = Int(Double (health) + Double (maximumHealth) * 0.3)
             remainsOfHealing = remainsOfHealing - 1
@@ -63,7 +63,7 @@ class Monster: Entity {
 
 class Game {
     // играем
-    public func game() {
+    func game() {
         var playerAttack = true
         
         var player = Player(attack: 25, protection: 14, health: 40, minDamage: 1, maxDamage: 10)
