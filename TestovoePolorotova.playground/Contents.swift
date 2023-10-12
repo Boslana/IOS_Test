@@ -82,7 +82,7 @@ class Game {
                 }
             } while player!.health > 0 && monster!.health > 0
             
-            if player!.health < 0 {
+            if player!.health <= 0 {
                 print("Монстр выиграл!")
             } else {
                 print ("Игрок выиграл!")
